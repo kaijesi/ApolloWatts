@@ -1,13 +1,15 @@
-import { defineConfig } from 'vite';
+import { defineConfig, resolveConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',                // Not used as Bootstrap covers styling
+                'resources/js/app.js',                  // Loaded on all pages
+                'resources/js/helpers/signup-form.js'   // Signup form related assets
+            ],
             refresh: true,
         }),
-        tailwindcss(),
     ],
 });
