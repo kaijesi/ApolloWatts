@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('postcode');
             $table->string('city');
             $table->string('country');
-            $table->string('solis_api_id');
-            $table->string('solis_api_key');
+            $table->string('solis_api_id')->nullable();
+            $table->string('solis_api_key')->nullable();
         });
     }
 
