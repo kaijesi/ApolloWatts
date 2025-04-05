@@ -1,0 +1,36 @@
+{{--
+Base layout for all views of the application.
+Common header tags are defined here, others can be added by child views into @stack section.
+
+--}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {{-- Allow for title insertion from pages using this layout --}}
+    <title>{{ $title ?? 'ApolloWatts' }}</title>
+    
+    {{-- Include Bootstrap, jQuery & Laravel's main app.js --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    @vite(['resources/js/app.js'])
+
+    {{-- Slot to insert furhter headers for individual views --}}
+    @stack('custom-headers')
+
+</head>
+
+<body>
+    <x-header />
+    <x-navigation />
+    <main class="container mt-4">
+        {{ $slot }}
+    </main>
+    <x-footer />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
