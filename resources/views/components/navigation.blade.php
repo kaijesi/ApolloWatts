@@ -15,25 +15,33 @@
                 </li>
                 @auth
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">My Household</a>
+                        <a class="nav-link" href="{{ route('my-household') }}">My Household</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">My Installations</a>
+                        <a class="nav-link" href="{{ route('my-installations') }}">My Installations</a>
                     </li>
                 @endauth
             </ul>
             <ul class="navbar-nav">
                 @guest
                     <li class="nav-item">
-                        <a class="btn btn-outline-primary m-2">Login</a>
+                        <button type="button" class="btn btn-outline-primary m-2" data-bs-toggle="modal" data-bs-target="#login">
+                            Login
+                        </button>
+                        <x-modal modalId="login" modalTitle="Login">
+                            <x-login-form/>
+                        </x-modal>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-primary m-2" href="{{ route('signup') }}">Sign Up</a>
                     </li>
                 @else
-                    <li class="nav-item">
-                        <a class="btn btn-primary m-2" href="{{ url('/') }}">Logout</a>
-                        <form id="logout-form" action="{{ url('/') }}" method="POST" class="d-none">
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary m-2" href="{{ route('my-details') }}">My Details</a>
+                </li>    
+                <li class="nav-item">
+                        <button type="submit" class="btn btn-primary m-2" form="logout-form">Logout</button>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
                     </li>
