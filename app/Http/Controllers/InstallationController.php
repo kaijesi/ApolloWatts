@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreInstallationRequest;
 use App\Models\Installation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InstallationController extends Controller
 {
@@ -12,11 +14,18 @@ class InstallationController extends Controller
      */
     public function index()
     {
-        //
+        // Retireve current user
+        $user = Auth::user();
+        
+        // Find installations and display them on the my-installations view
+        $installations = $user->household->installations;
+        return view('my-installations', ['installations' => $installations]);
     }
 
     /**
      * Show the form for creating a new resource.
+     * --No use case at this point--
+     * Installations are only added via popup/modal, there is no designated form view
      */
     public function create()
     {
@@ -26,9 +35,20 @@ class InstallationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreInstallationRequest $request)
     {
-        //
+        // Retireve validated data
+        $validatedData = $request->validated();
+
+        // Create new installation for current user's household
+        $installation = new Installation();
+        $installation->fill($validatedData);
+        $installation->household_id = Auth::user()->household_id;
+
+        // Store into DB
+        $installation->save();
+
+        return redirect(route('my-installations'));
     }
 
     /**
