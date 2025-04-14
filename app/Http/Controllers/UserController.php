@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Models\Household;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('signup');
     }
 
     /**
@@ -33,19 +34,48 @@ class UserController extends Controller
     {
         // Retrieve validated input
         $validated = $request->validated();
-        
-        // User creation in database with this input
+
+        // Depending on user choice, create a new or join an existing household
+        $userHouseholdId = NULL;
+
+        // Household creation
+        if ($validated['householdOption'] == 'create') {
+            $household = new Household;
+            $household->name = $validated['lastNameInput'] . ' Household';
+            $household->street = $validated['street'];
+            $household->number = $validated['number'];
+            $household->postcode = $validated['postcode'];
+            $household->city = $validated['city'];
+            $household->country = $validated['country'];
+            $household->solis_api_id = $validated['solis_api_id'];
+            $household->solis_api_key = $validated['solis_api_key'];
+
+            $household->save();
+
+            $userHouseholdId = $household->id;
+        }
+        // Household join
+        else {
+            $userHouseholdId = $validated['householdInviteCode'];
+        }
+
+        // Create user
         $user = new User;
         $user->name = $validated['firstNameInput'] . ' ' . $validated['lastNameInput'];
         $user->email = $validated['emailInput'];
         $user->password = Hash::make($validated['passwordInput']);
-        $user->household_id = 1;
+        $user->household_id = $userHouseholdId;
+        if ($validated['householdOption'] == 'create') {
+            $user->is_household_admin = true;
+        }
+
+        // DB transaction
         $user->save();
 
 
         // Proceed with login and show home page
         Auth::login($user);
-        return redirect('/');
+        return redirect(route('home'));
     }
 
     /**
@@ -53,7 +83,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $user = Auth::user();
+        return view('my-details', ['user' => $user]);
     }
 
     /**
