@@ -27,6 +27,20 @@ Common header tags are defined here, others can be added by child views into @st
     <x-header />
     <x-navigation />
     <main class="container mt-4">
+        {{-- 
+        Laravel handles errors by redirecting form submissions to the initial page
+        Any errors encountered are stored in an $errors list
+        --}}
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Error(s) encountered:</h4>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         {{ $slot }}
     </main>
     <x-footer />
