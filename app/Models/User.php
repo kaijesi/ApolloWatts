@@ -22,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'household_id'
+        'household_id',
+        'is_household_admin'
     ];
 
     /**
