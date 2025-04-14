@@ -13,6 +13,7 @@ class Installation extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'name',
         'latitude',
         'longitude',
         'peak_power',
