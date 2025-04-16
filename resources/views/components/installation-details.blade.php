@@ -5,8 +5,15 @@ Card component showing details for a specific installation
 --}}
 
 <div class="card">
-    <div class="card-header bg-secondary text-white">
+    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0">{{ $installation['name'] ?? 'Installation Details' }}</h5>
+        @if (Route::currentRouteName() === 'my-installations')
+            <div>
+                <a href="{{ route('installations.show', $installation['id']) }}" class="btn btn-sm btn-outline-light">
+                    View Details
+                </a>
+            </div>
+        @endif
     </div>
     <div class="card-body">
         <div class="mb-3">
@@ -18,7 +25,7 @@ Card component showing details for a specific installation
             <p class="card-text">{{ $installation['longitude'] }}</p>
         </div>
         <div class="mb-3">
-            <strong>Peak Power:</strong>
+            <strong>Peak Power (kW):</strong>
             <p class="card-text">{{ $installation['peak_power'] }}</p>
         </div>
         <div class="mb-3">
@@ -26,19 +33,19 @@ Card component showing details for a specific installation
             <p class="card-text">{{ $installation['pv_tech'] }}</p>
         </div>
         <div class="mb-3">
-            <strong>System Loss:</strong>
+            <strong>System Loss (%):</strong>
             <p class="card-text">{{ $installation['system_loss'] }}</p>
         </div>
         <div class="mb-3">
-            <strong>Slope Angle:</strong>
+            <strong>Slope Angle (°):</strong>
             <p class="card-text">{{ $installation['slope_angle'] }}</p>
         </div>
         <div class="mb-3">
-            <strong>Azimuth:</strong>
+            <strong>Azimuth (°):</strong>
             <p class="card-text">{{ $installation['azimuth'] }}</p>
         </div>
         <div class="mb-3">
-            <strong>System Cost:</strong>
+            <strong>System Cost (€):</strong>
             <p class="card-text">{{ $installation['system_cost'] }}</p>
         </div>
         <div class="mb-3">
