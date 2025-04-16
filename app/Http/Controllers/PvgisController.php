@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class PvgisController extends Controller
 {
-    function showResults(PvgisRequest $request)
+    function getMonthlyProjection(PvgisRequest $request)
     {
         // Retireve validated data
         $validatedData = $request->validated();

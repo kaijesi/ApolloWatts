@@ -77,4 +77,4 @@ Route::post('/new-installation', [InstallationController::class, 'store'])->name
 /**
  * Route to get PVGIS results
  */
-Route::post('/pvgis-results', [PvgisController::class, 'showResults'])->name('pvgis.results')->middleware('auth');
+Route::post('/pvgis-results', [PvgisController::class, 'getMonthlyProjection'])->name('pvgis.results')->middleware('auth');
