@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'pvgis' => [
+        'base_url' => env('PVGIS_BASE_URL')
+    ]
+
 ];
