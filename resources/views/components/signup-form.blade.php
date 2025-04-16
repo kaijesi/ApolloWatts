@@ -5,22 +5,6 @@ This component contains the user signup form as well as a form to submit househo
 The option to join an existing household via the household's join code is also included.
 --}}
 
-
-{{-- 
-Laravel handles errors by redirecting form submissions to the initial page
-Any errors encountered are stored in an $errors list
- --}}
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <h4 class="alert-heading">Error(s) encountered:</h4>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 {{-- Form Content --}}
 <form action="{{ route('register') }}" method="POST">
     {{-- Include a CSRF Token --}}
