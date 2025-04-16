@@ -25,10 +25,10 @@ class StoreInstallationRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'latitude' => 'required|numeric|min:-90|max:90',
+            'longitude' => 'required|numeric|min:-180|max:180',
             'peak_power' => 'required|numeric|min:0',
-            'pv_tech' => 'required|string|max:255',
+            'pv_tech' => 'required|string|in:crystSi,CIS,CdTe',
             'system_loss' => 'required|numeric|min:0|max:100',
             'slope_angle' => 'required|numeric|min:0|max:90',
             'azimuth' => 'required|numeric|min:0|max:360',
