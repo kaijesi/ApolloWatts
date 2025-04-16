@@ -8,9 +8,9 @@ use Illuminate\View\Component;
 
 class InstallationDetails extends Component
 {
-    
+
     public $installation;
-    
+
     /**
      * Create a new component instance.
      */
