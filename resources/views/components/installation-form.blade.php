@@ -27,7 +27,11 @@ Used to submit installation details
     </div>
     <div class="mb-3">
         <label for="pv_tech" class="form-label">PV Technology</label>
-        <input type="text" class="form-control" id="pv_tech" name="pv_tech" placeholder="Enter PV Technology">
+        <select class="form-select" id="pv_tech" name="pv_tech" required>
+            <option value="crystSi">Crystalline silicon</option>
+            <option value="CIS">CIS</option>
+            <option value="CdTe">CdTe</option>
+        </select>
     </div>
     <div class="mb-3">
         <label for="system_loss" class="form-label">System Loss (%)</label>
@@ -42,7 +46,7 @@ Used to submit installation details
         <input type="number" class="form-control" id="azimuth" name="azimuth" placeholder="Enter Azimuth">
     </div>
     <div class="mb-3">
-        <label for="system_cost" class="form-label">System Cost ($)</label>
+        <label for="system_cost" class="form-label">System Cost (€)</label>
         <input type="number" step="0.01" class="form-control" id="system_cost" name="system_cost" placeholder="Enter System Cost">
     </div>
     <div class="mb-3">
