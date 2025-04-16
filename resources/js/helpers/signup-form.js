@@ -10,7 +10,7 @@ function handleHouseholdJoinCheckbox() {
         const selectedOption = $('input[name="householdOption"]:checked').val();
         if (selectedOption === 'join') {
             $householdJoinFieldsContainer.show();
-            $householdInviteCode.prop('required', true).prop('disabled', false); 
+            $householdInviteCode.prop('required', true).prop('disabled', false);
             $householdCreateFieldsContainer.hide();
             $householdCreateFieldsContainer.find('input').prop('required', false).prop('disabled', true);
         } else {
