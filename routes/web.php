@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\InstallationController;
+use App\Http\Controllers\PvgisController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,9 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Route to Home Page
  */
-Route::get('/', function () {return view('home');})->name('home');
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
 /* AUTHENTICATION/USER ROUTES */
 
@@ -57,6 +60,11 @@ Route::get('/my-household', [HouseholdController::class, 'show'])->name('my-hous
 /* INSTALLATION ROUTES */
 
 /**
+ * Route to show an installation
+ */
+Route::get('/my-installations/{installation}', [InstallationController::class, 'show'])->name('installations.show');
+
+/**
  * Route to show installations
  */
 Route::get('/my-installations', [InstallationController::class, 'index'])->name('my-installations')->middleware('auth');
@@ -65,3 +73,8 @@ Route::get('/my-installations', [InstallationController::class, 'index'])->name(
  * Route to register a new installation
  */
 Route::post('/new-installation', [InstallationController::class, 'store'])->name('new-installation')->middleware('auth');
+
+/**
+ * Route to get PVGIS results
+ */
+Route::post('/pvgis-results', [PvgisController::class, 'showResults'])->name('pvgis.results')->middleware('auth');
