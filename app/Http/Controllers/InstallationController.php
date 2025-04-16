@@ -16,7 +16,7 @@ class InstallationController extends Controller
     {
         // Retireve current user
         $user = Auth::user();
-        
+
         // Find installations and display them on the my-installations view
         $installations = $user->household->installations;
         return view('my-installations', ['installations' => $installations]);
@@ -56,7 +56,11 @@ class InstallationController extends Controller
      */
     public function show(Installation $installation)
     {
-        //
+        // Check whether the user is allowed to view the installation based on defined policies
+        if (Auth::user()->cannot('view', $installation)) {
+            abort(403);
+        }
+        return view('installation', ['installation' => $installation]);
     }
 
     /**
