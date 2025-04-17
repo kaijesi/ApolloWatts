@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UserStoreRequest;
 use App\Models\Household;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -30,7 +31,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(UserStoreRequest $request)
     {
         // Retrieve validated input
         $validated = $request->validated();
