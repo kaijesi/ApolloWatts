@@ -25,11 +25,11 @@ class InstallationPolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Only household admins can create new installations
      */
     public function create(User $user): bool
     {
-        return false;
+        return $user->is_household_admin;
     }
 
     /**
@@ -37,7 +37,7 @@ class InstallationPolicy
      */
     public function update(User $user, Installation $installation): bool
     {
-        return false;
+        return $user->household_id === $installation->household_id && $user->is_household_admin;
     }
 
     /**
@@ -45,7 +45,7 @@ class InstallationPolicy
      */
     public function delete(User $user, Installation $installation): bool
     {
-        return false;
+        return $user->household_id === $installation->household_id && $user->is_household_admin;
     }
 
     /**
