@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\HouseholdController;
 use App\Http\Controllers\InstallationController;
 use App\Http\Controllers\PvgisController;
+use App\Http\Controllers\SolisController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -62,7 +63,7 @@ Route::get('/my-household', [HouseholdController::class, 'show'])->name('my-hous
 /**
  * Route to show an installation
  */
-Route::get('/my-installations/{installation}', [InstallationController::class, 'show'])->name('installations.show');
+Route::get('/my-installations/{installation}', [InstallationController::class, 'show'])->name('installations.show')->middleware('auth');
 
 /**
  * Route to show installations
@@ -75,6 +76,21 @@ Route::get('/my-installations', [InstallationController::class, 'index'])->name(
 Route::post('/new-installation', [InstallationController::class, 'store'])->name('new-installation')->middleware('auth');
 
 /**
+ * Route to edit an installation
+ */
+Route::patch('/my-installations/{installation}', [InstallationController::class, 'update'])->name('installations.update')->middleware('auth');
+
+/**
+ * Route to delete an installation
+ */
+Route::delete('/my-installations/{installation}', [InstallationController::class, 'destroy'])->name('installations.destroy')->middleware('auth');
+
+/**
  * Route to get PVGIS results
  */
 Route::post('/pvgis-results', [PvgisController::class, 'getMonthlyProjection'])->name('pvgis.results')->middleware('auth');
+
+/**
+ * Route to get Solis results
+ */
+Route::post('/solis-results', [SolisController::class, 'requestStationDetails'])->name('solis.results')->middleware('auth');
