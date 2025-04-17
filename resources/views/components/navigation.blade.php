@@ -10,9 +10,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home') }}">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/') }}">About</a>
-                </li>
                 @auth
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('my-household') }}">My Household</a>
