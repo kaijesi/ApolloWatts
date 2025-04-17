@@ -25,14 +25,13 @@ class Household extends Model
 
     /**
      * Attributes that should be cast to certain types.
-     * This includes the Solis API ID and key
      *
      * @return array<string, string>
      */
     protected function casts(): array
     {
         return [
-            'solis_api_id', 'solis_api_key' => 'hashed'
+            
         ];
     }
 
