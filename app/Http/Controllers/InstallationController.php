@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InstallationStoreRequest;
 use App\Http\Requests\StoreInstallationRequest;
 use App\Models\Installation;
 use Illuminate\Http\Request;
@@ -35,8 +36,11 @@ class InstallationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInstallationRequest $request)
+    public function store(InstallationStoreRequest $request)
     {
+        if (Auth::user()->cannot('create', Installation::class)) {
+            abort(403);
+        }
         // Retireve validated data
         $validatedData = $request->validated();
 
@@ -65,6 +69,7 @@ class InstallationController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * -- Not used, form is shown in modal on installation detail page)
      */
     public function edit(Installation $installation)
     {
@@ -74,9 +79,19 @@ class InstallationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Installation $installation)
+    public function update(InstallationStoreRequest $request, Installation $installation)
     {
-        //
+        // Check if user is allowed to update the installation
+        if (Auth::user()->cannot('update', $installation)) {
+            abort(403);
+        }
+
+        // Retireve validated data
+        $validatedData = $request->validated();
+
+        $installation->update($validatedData);
+
+        return redirect()->route('installations.show', $installation);
     }
 
     /**
@@ -84,6 +99,11 @@ class InstallationController extends Controller
      */
     public function destroy(Installation $installation)
     {
-        //
+        // Check whether the user is allowed to delete the installation based on defined policies
+        if (Auth::user()->cannot('delete', $installation)) {
+            abort(403);
+        }
+        $installation->delete();
+        return redirect(route('my-installations'));
     }
 }
