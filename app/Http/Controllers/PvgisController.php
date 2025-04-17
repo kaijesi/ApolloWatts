@@ -14,7 +14,6 @@ class PvgisController extends Controller
         $validatedData = $request->validated();
         $client = new PvgisClient();
         $results = $client->monthlyOutputProjection($validatedData);
-        //return view('analytics-results', ['results' => $results]);
         return response($results);
     }
 }
