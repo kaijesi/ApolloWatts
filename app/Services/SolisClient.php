@@ -4,20 +4,29 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
+use Illuminate\Http\Client\Response;
 
 class SolisClient
 {
     /**
-     * Necessary properties
+     * This class handles interaction with the SolisCloud API. 
+     * 
+     * 
+     */
+    
+    
+    /**
+     * Properties
      */
     private PendingRequest $client;
     private string $solisApiId;
     private string $solisApiSecret;
-    private string $method = 'POST'; // All requests to Solis need to be POST, therefore not in constructor
-    private string $contentType = 'application/json'; // Same applies here, this has to be fixed for all requests
+    // All requests to Solis need to be POST & application/json, therefore not in constructor
+    private string $method = 'POST'; 
+    private string $contentType = 'application/json';
 
     /**
-     * Create a new class instance.
+     * Creates a new Solis Client
      */
     public function __construct(string $solisApiId, string $solisApiSecret)
     {
@@ -27,9 +36,9 @@ class SolisClient
     }
 
     /**
-     * Request a list of plants available for the given API credentials
+     * Requests a list of plants available for this client
      */
-    public function requestUserStationList()
+    public function requestUserStationList(): Response
     {
         // Fill in necessary header attributes for the request
         $resource = '/v1/api/userStationList/';
@@ -61,6 +70,13 @@ class SolisClient
 
 
     // Private functions available to this class
+
+    /**
+     * MD-5 hashes the body of the request
+     * 
+     * @param string $body
+     * @return string
+     */
     private function generateContentMd5(string $body): string
     {
         $bodyToUtf8 = mb_convert_encoding($body, 'UTF-8');
@@ -68,6 +84,20 @@ class SolisClient
         return base64_encode($md5Binary);
     }
 
+    /**
+     * Generates the authorisation header, a SHA1 hash of a number of the request's attributes
+     * 
+     * @param string $apiId (A valid API ID for soliscloud.com)
+     * @param string $apiSecret (A valid API Secret for soliscloud.com)
+     * @param string $contentMd5 (The request's body, hashed with MD-5)
+     * @param string $contentType (The request's content type, usually 'application/json')
+     * @param string $date (The current date/time formatted "D, d M Y H:i:s T")
+     * @param string $resource (The request's target resource at soliscloud.com)
+     * @param string $method (The request's method, usually 'POST')
+     * 
+     * @return string (The string)
+     * 
+     */
     private function getAuthorisationString(
         string $apiId,
         string $apiSecret,
