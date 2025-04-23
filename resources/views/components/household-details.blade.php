@@ -5,8 +5,18 @@ Card component containing information about a household
  --}}
 
 <div class="card">
-    <div class="card-header bg-primary text-white">
+    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
         <h5 class="mb-0">{{ $household->name }}</h5>
+        @if (Auth::user()->can('update', $household))
+            <div class="d-flex align-items-center" style="color: #212529;">
+                <button type="button" class="btn btn-outline-light m-2" data-bs-toggle="modal" data-bs-target="#edit">
+                    Edit
+                </button>
+                <x-modal modalId="edit" modalTitle="Edit">
+                    <x-household-form :household='$household' />
+                </x-modal>
+            </div>
+        @endif
     </div>
     <div class="card-body">
         <div class="mb-3">
