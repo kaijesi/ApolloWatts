@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\Household;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +77,7 @@ class UserController extends Controller
 
         // Proceed with login and show home page
         Auth::login($user);
-        return redirect(route('home'));
+        return redirect(route('home'))->with('success', 'User created. Welcome to ApolloWatts.');
     }
 
     /**
@@ -93,15 +94,53 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        // Check if running user is allowed to update the user record
+        if (Auth::user()->cannot('update', $user)) {
+            abort(403);
+        }
+
+        // Retrieve validated data
+        $validated = $request->validated();
+
+        // Update name
+        if (isset($validated['name'])) {
+            $user->name = $validated['name'];
+        }
+
+        // Update admin attribute
+        if (isset($validated['is-household-admin'])) {
+            // For removals of admin privileges prevent user from removing the last admin
+            if (!$validated['is-household-admin']) { 
+                $adminCount = User::where('household_id', $user->household_id)->where('is_household_admin', true)->count();
+                if ($adminCount == 1) {
+                    return back()->withErrors('You cannot remove the last remaining admin');
+                }
+            }
+            
+            $user->is_household_admin = $validated['is-household-admin'];
+        }
+
+        // Check current password and overwrite with new one if correct
+        if (isset($validated['new-password'])) {
+            if (!Hash::check($validated['current-password'], $user->password)) {
+                return back()->withErrors(['current-password' => 'The provided current password does not match your current password.']);
+            }
+
+            $user->password = Hash::make($validated['new-password']);
+        }
+
+        // Update user in DB
+        $user->save();
+
+        return redirect()->route('my-household')->with('success', 'Your details have been updated.');
+
     }
 
     /**
@@ -109,6 +148,19 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if (Auth::user()->cannot('delete', $user)){
+            abort(403);
+        }
+
+        // Delete household if admin leaves (deletion cascades to all child objects of household, meaning all users and installations)
+        if ($user->is_household_admin) 
+        {
+            $user->household()->delete();
+        }
+        
+        // Otherwise, only delete user
+        $user->delete();
+        
+        return redirect()->route('home');
     }
 }
