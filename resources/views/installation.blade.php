@@ -9,6 +9,9 @@ Contains details about an individual installation as well as analytics for it
     <h2 class="my-4" id="installation-name" name="installation-name">{{ $installation['name'] }}</h2>
     <x-installation-details :installation='$installation' />
     <h2 class="my-4">Analytics</h2>
+    {{-- Container for potential errors --}}
+    <div id="error-container"></div>
+    {{-- Analytics Components --}}
     <div class="my-4"><x-pvgis-analytics :installation='$installation' /></div>
     <div class="my-4"><x-solis-analytics :installation='$installation'/></div>
 </x-base-layout>
