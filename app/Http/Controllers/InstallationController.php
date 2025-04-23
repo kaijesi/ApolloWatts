@@ -52,7 +52,7 @@ class InstallationController extends Controller
         // Store into DB
         $installation->save();
 
-        return redirect(route('my-installations'));
+        return redirect()->route('my-installations')->with('success', 'Your installation has been created.');
     }
 
     /**
@@ -89,9 +89,10 @@ class InstallationController extends Controller
         // Retireve validated data
         $validatedData = $request->validated();
 
+        // Update installation in DB
         $installation->update($validatedData);
 
-        return redirect()->route('installations.show', $installation);
+        return redirect()->route('installations.show', $installation)->with('success', 'Your installation has been updated.');
     }
 
     /**
