@@ -84,27 +84,25 @@ ApolloWatts is a Laravel-based web application designed to help manage and monit
     cp .env.example .env
     ```
 
-5.  Configure your  `.env`  file with database credentials and other settings.
-
-6.  Generate an application key:
+5.  Generate an application key:
 
     ```bash
     php artisan key:generate
     ```
 
-7.  Run database migrations and seed:
+6.  Run database migrations and seed:
 
     ```bash
     php artisan migrate:fresh --seed
     ```
 
-8.  Install Node dependencies:
+7.  Install Node dependencies:
 
     ```bash
     npm install
     ```
 
-9.  Compile assets:
+8.  Compile assets:
 
     ```bash
     npm run build
