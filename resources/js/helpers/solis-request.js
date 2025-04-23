@@ -13,7 +13,7 @@ function getSolisResults(form, callback) {
 // Function to generate a gauge chart
 function generateGauge(userStation) {
     // Gauge Chart
-    const ctx = document.getElementById('gaugeChart').getContext('2d');
+    const ctx = document.getElementById('gauge-chart').getContext('2d');
 
     const capacity = userStation['capacity'];
     const power = userStation['power'];
@@ -52,11 +52,16 @@ function generateGauge(userStation) {
         }
     };
 
-    const myGaugeChart = new Chart(ctx, config);
+    const utilisationGaugeChart = new Chart(ctx, config);
+    return utilisationGaugeChart;
 }
 
 // Execute when document is loaded
 $(document).ready(function () {
+
+    // Variable to contain the gauge chart, defined here as I need it on form submissions and also when closing the analytics section
+    let utilisationGaugeChart = null;
+
     // Execute on form submission
     $("#solis-form").submit(function (event) {
 
@@ -66,43 +71,60 @@ $(document).ready(function () {
         let solisResults;
         getSolisResults(this, function (results) { // Using callback here so that execution waits for results to be received
             if (results) {
+                if (results['message']) {
+                    $('#error-container').html(`<div class="alert alert-warning my-4" role="alert">${results['message']}</div>`);
+                }
                 solisResults = results['data']['page']['records']; // all Stations
                 console.log(solisResults);
                 // Find the user's station based on the name of the installation between ApolloWatts and Solis
                 let nameValue = $("#installation-name").text();
-                let userStation;
+                let userStation = null;
                 for (const item of solisResults) {
                     if (item['stationName'] === nameValue) {
                         userStation = item;
-
                     }
                 }
 
-                // Generate Analytics
-                // Gauge Chart
-                generateGauge(userStation);
-                $('#gauge-center-text').html(`<p><b>Current Power Generation: ${userStation['power']} kW </b></p>`);
-                // KPIs
-                const kpisContainer = $("#kpis");
-                let kpisHTML = `
+                if (userStation) {
+                    // Generate Analytics
+                    // Gauge Chart
+                    utilisationGaugeChart = generateGauge(userStation);
+                    $('#gauge-center-text').html(`<p><b>Current Power Generation: ${userStation['power']} kW </b></p>`);
+                    // KPIs
+                    const kpisContainer = $("#kpis");
+                    let kpisHTML = `
                 <p><b>Station Name:</b> ${userStation['stationName']}</p>
                 <p><b>Total Energy:</b> <b>${userStation['allEnergy']}</b> kWh</p>
                 <p><b>Today's Energy:</b> <b>${userStation['dayEnergy']}</b> kWh</p>
                 <p><b>Max Power:</b> <b>${userStation['capacity']}</b> kWp</p>
                 <p><b>Current Weather:</b> <b>${userStation['condTxtD']}</b></p>
                 `;
-                kpisContainer.html(kpisHTML);
-
-
-                // Show the charts canvas and scroll to it
-                $('#solis-analytics').show();
-                $('#solis-analytics').get(0).scrollIntoView();
+                    kpisContainer.html(kpisHTML);
+                    // Show the charts canvas & close button and scroll to it
+                    $('#solis-analytics').show();
+                    $('#solis-analytics').get(0).scrollIntoView();
+                    $('#solis-close-chart').show();
+                }
+                else {
+                    $('#error-container').html('<div class="alert alert-warning my-4" role="alert">Error fetching results.</div>');
+                }
 
 
             }
             else {
-                $('#results-container').html('<div class="alert alert-warning my-4" role="alert">Error fetching results.</div>');
+                $('#error-container').html('<div class="alert alert-warning my-4" role="alert">Error fetching results.</div>');
             }
         });
+    });
+
+    // Event listener for the close button
+    $('#solis-close-chart').click(function () {
+        $('#solis-analytics').hide();
+        $(this).hide(); // Hide the close button itself
+        // Destroy the gauge chart to prevent the regeneration of trying to overwrite over the same canvas
+        if (utilisationGaugeChart) {
+            utilisationGaugeChart.destroy();
+            utilisationGaugeChart = null;
+        }
     });
 });
