@@ -14,6 +14,9 @@ class SolisController extends Controller
         $user = Auth::user();
         $apiId = $user->household->solis_api_id;
         $apiKey = $user->household->solis_api_key;
+        if (!($apiId || $apiKey)) {
+            return response('{"message": "You cannot access Solis features without valid API credentials"}');
+        }
         $client = new SolisClient($apiId, $apiKey);
         $result = $client->requestUserStationList();
         return response($result);
