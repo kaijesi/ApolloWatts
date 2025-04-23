@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HouseholdUpdateRequest;
 use App\Models\Household;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,15 +57,26 @@ class HouseholdController extends Controller
      */
     public function edit(Household $household)
     {
-        //
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Household $household)
+    public function update(HouseholdUpdateRequest $request, Household $household)
     {
-        //
+        if (Auth::user()->cannot('update', $household)) {
+            abort(403);
+        }
+
+        // Get details
+        $validated = $request->validated();
+        
+        // Update household
+        $household->update($validated);
+
+        return redirect()->route('my-household')->with('success', 'Your household information has been updated');
+
     }
 
     /**
