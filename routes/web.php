@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * Route to Home Page
  */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', function () {return view('home');})->name('home');  
 
 /* AUTHENTICATION/USER ROUTES */
 
@@ -51,12 +49,27 @@ Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logou
  */
 Route::get('/my-details', [UserController::class, 'show'])->name('my-details')->middleware('auth');
 
+/**
+ * Route to update user details
+ */
+Route::patch('/my-details/{user}', [UserController::class, 'update'])->name('my-details.update')->middleware('auth');
+
+/**
+ * Route to delete a user
+ */
+Route::delete('/my-details/{user}', [UserController::class, 'destroy'])->name('my-details.destroy')->middleware('auth');
+
 /* HOUSEHOLD ROUTES */
 
 /**
  * Route to show user's household
  */
 Route::get('/my-household', [HouseholdController::class, 'show'])->name('my-household')->middleware('auth');
+
+/**
+ * Route to edit a household
+ */
+Route::patch('/my-household/{household}', [HouseholdController::class, 'update'])->name('household.update')->middleware('auth');
 
 /* INSTALLATION ROUTES */
 
@@ -84,6 +97,9 @@ Route::patch('/my-installations/{installation}', [InstallationController::class,
  * Route to delete an installation
  */
 Route::delete('/my-installations/{installation}', [InstallationController::class, 'destroy'])->name('installations.destroy')->middleware('auth');
+
+
+/* ANALYTICS ROUTES */
 
 /**
  * Route to get PVGIS results
