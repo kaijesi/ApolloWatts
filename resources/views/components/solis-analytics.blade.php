@@ -13,19 +13,19 @@ of the view this component appears in --}}
 <form id="solis-form" method="POST">
     @csrf
     <input type="hidden" id="name" name="name" value="{{ $installation->name }}">
-    <button type="submit" class="btn btn-primary">Get Solis Analytics</button>
+    <button type="submit" class="btn btn-primary mb-4">Get Solis Analytics</button>
 </form>
 
-{{-- Container for potential errors --}}
-<div id="results-container"></div>
+{{-- Close Button --}}
+<button id="solis-close-chart" class="btn btn-secondary mb-4" style="display: none;">Close</button>
 
 {{-- Container to render charts --}}
 <div id="solis-analytics" style="max-width: 100%; width: 100%; display: none">
     <div class="row">
         <div class="col-md-6">
-            <div id="gaugeChartContainer">
+            <div id="gauge-chart-container">
                 <h4 class="my-4">Current Capacity Usage</h4>
-                <canvas id="gaugeChart"></canvas>
+                <canvas id="gauge-chart"></canvas>
                 <div id="gauge-center-text"></div>
             </div>
         </div>

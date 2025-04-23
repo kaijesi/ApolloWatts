@@ -19,11 +19,11 @@ of the view this component appears in --}}
     <input type="hidden" id="loss" name="loss" value="{{ $installation->system_loss }}">
     <input type="hidden" id="slope" name="slope" value="{{ $installation->slope_angle }}">
     <input type="hidden" id="azimuth" name="azimuth" value="{{ $installation->azimuth }}">
-    <button type="submit" class="btn btn-primary">Monthly Projection</button>
+    <button type="submit" class="btn btn-primary mb-4">Monthly Projection</button>
 </form>
 
-{{-- Container for potential errors --}}
-<div id="results-container"></div>
+{{-- Close Button --}}
+<button id="pvgis-close-chart" class="btn btn-secondary mb-4" style="display: none;">Close</button>
 
 {{-- Container to render charts --}}
-<canvas id="pvgisMonthlyChart" style="max-width: 100%; width: 100%; display: none"></canvas>
+<canvas id="pvgis-monthly-chart" style="max-width: 100%; width: 100%; display: none"></canvas>
