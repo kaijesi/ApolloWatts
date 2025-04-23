@@ -1,66 +1,121 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#   ApolloWatts
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+##   Project Description
 
-## About Laravel
+ApolloWatts is a Laravel-based web application designed to help manage and monitor solar panel installations. It provides tools for:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* Managing installations: Store and retrieve data about solar panel systems, including location, size, and technical specifications.
+* User authentication and management: Securely manage user accounts and access to the application. Users are organised in households, which can have multiple installations accessible to all household members and editable by household admins.
+* Calculating and visualizing energy production: 
+    * Estimate and display the energy output of the registered installations using data from [PVGIS](https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis_en) (an EU-managed API-accessible database with solar radiation data).
+    * Retrieve real-time data for installations using Solis inverters and their [Cloud-based tracking service](https://soliscloud.com/#/homepage)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+##   Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* [Features](#features)
+* [Technology Stack](#technology-stack)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Notes](#notes)
 
-## Learning Laravel
+##   Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Installation Management:**
+    * Store detailed information about solar installations (location, peak power, panel technology, etc.).
+    * Ability to create, read, update, and delete installations.
+* **Energy Production Calculation:**
+    * Integration with PVGIS or similar services to fetch solar radiation data.
+    * Calculation of estimated energy production based on installation parameters and solar radiation data.
+    * Visualize real energy production data (only for Solis-based installations).
+* **User Authentication and Management:**
+    * Secure user registration and login functionality.
+    * Role-based access control (household admins & members).
+* **Database Management:**
+    * Uses Laravel's Eloquent ORM to interact with the database.
+    * Database migrations for easy setup and schema management.
+* **Modern Web Interface**
+    * Dynamic front-end using Blade templates combined with jQuery-based interactivity.
+    * Responsive design thanks to Bootstrap.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+##   Technology Stack
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Laravel: PHP framework used for the backend
+* MySQL: Database
+* Composer: PHP Dependency Management
+* Blade: Templating engine
+* JavaScript
+    * jQuery
+    * Chart.js
+* PVGIS API
+* SolisCloud API (*note that a valid API key and secret are required*)
 
-## Laravel Sponsors
+##   Installation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+###   Prerequisites
 
-### Premium Partners
+* PHP >= 8.0
+* Composer
+* MySQL
+* Node.js + NPM
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Installation Steps
 
-## Contributing
+1.  Clone the repository:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```bash
+    git clone [https://github.com/kaijesi/ApolloWatts.git](https://github.com/kaijesi/ApolloWatts.git)
+    ```
 
-## Code of Conduct
+2.  Navigate to the project directory:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```bash
+    cd ApolloWatts
+    ```
 
-## Security Vulnerabilities
+3.  Install Composer dependencies:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```bash
+    composer install
+    ```
 
-## License
+4.  Copy the  `.env.example`  file to  `.env`:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```bash
+    cp .env.example .env
+    ```
+
+5.  Configure your  `.env`  file with database credentials and other settings.
+
+6.  Generate an application key:
+
+    ```bash
+    php artisan key:generate
+    ```
+
+7.  Run database migrations and seed:
+
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
+
+8.  Install Node dependencies:
+
+    ```bash
+    npm install
+    ```
+
+9.  Compile assets:
+
+    ```bash
+    npm run build
+    ```
+
+##   Usage
+
+1.  Start the Laravel development server:
+
+    ```bash
+    php artisan serve
+    ```
+
+2.  Access the application in your web browser at  `http://localhost:8000`.
