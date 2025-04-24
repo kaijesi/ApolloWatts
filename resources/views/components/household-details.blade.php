@@ -39,6 +39,13 @@ Card component containing information about a household
             <strong>Country:</strong>
             <p class="card-text">{{ $household->country }}</p>
         </div>
+        {{-- Show household ID for admin to share with others for joining the household --}}
+        @if (Auth::user()->is_household_admin)
+        <div class="mb-3">
+            <strong>Household Join Code:</strong>
+            <p class="card-text">{{ $household->id }}</p>
+        </div>
+        @endif
         <div class="mb-3">
             <strong>Created At:</strong>
             <p class="card-text">{{ $household->created_at }}</p>
