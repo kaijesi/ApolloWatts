@@ -18,7 +18,7 @@ Common header tags are defined here, others can be added by child views into @st
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     @vite(['resources/js/app.js'])
 
-    {{-- Slot to insert furhter headers for individual views --}}
+    {{-- Slot to insert furhter headers necessary for individual views --}}
     @stack('custom-headers')
 
 </head>
@@ -34,10 +34,7 @@ Common header tags are defined here, others can be added by child views into @st
                 <p>{{ session('success') }}</p>
             </div>
         @endif
-        {{-- 
-        Laravel handles errors by redirecting form submissions to the initial page
-        Any errors encountered are stored in an $errors list
-        --}}
+        {{-- Display errors --}}
         @if ($errors->any())
             <div class="alert alert-danger">
                 <h4 class="alert-heading">Error(s) encountered:</h4>
@@ -48,7 +45,8 @@ Common header tags are defined here, others can be added by child views into @st
                 </ul>
             </div>
         @endif
-        {{ $slot }}
+        {{-- Main content slot into which other components or views are inserted --}}
+        {{ $slot }} 
     </main>
     <x-footer />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

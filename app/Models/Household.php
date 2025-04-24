@@ -5,6 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Model representing a household. 
+ * 
+ * Households contain contact information and optionally API information for interfacing with the SolisCloud API.
+ * Households have multiple users and installations assigned to them.
+ */
 class Household extends Model
 {
     /**
@@ -47,7 +53,7 @@ class Household extends Model
 
 
     /**
-     * Create relationship to Users
+     * Create relationship to users
      */
     public function users(): HasMany
     {
@@ -55,7 +61,7 @@ class Household extends Model
     }
 
     /**
-     * Create relationship to Installations
+     * Create relationship to installations
      */
     public function installations(): HasMany
     {

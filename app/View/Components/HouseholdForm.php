@@ -9,6 +9,7 @@ use Illuminate\View\Component;
 class HouseholdForm extends Component
 {
     public $household;
+    
     /**
      * Create a new component instance.
      */

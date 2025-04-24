@@ -12,7 +12,7 @@ class PvgisRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check(); // Only authenticated users can send this request
+        return Auth::check(); // Only logged-in users, further authorisation logic in controller
     }
 
     /**
@@ -23,13 +23,13 @@ class PvgisRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lat' => 'required|numeric|min:-90|max:90',
-            'lon' => 'required|numeric|min:-180|max:180',
-            'peakpower' => 'required|numeric|min:0',
-            'pvtechchoice' => 'required|string|in:crystSi,CIS,CdTe',
-            'loss' => 'required|numeric|min:0|max:100',
-            'slope' => 'required|numeric|min:0|max:90',
-            'azimuth' => 'required|numeric|min:0|max:360',
+            'lat'               => 'required|numeric|min:-90|max:90',
+            'lon'               => 'required|numeric|min:-180|max:180',
+            'peakpower'         => 'required|numeric|min:0',
+            'pvtechchoice'      => 'required|string|in:crystSi,CIS,CdTe',
+            'loss'              => 'required|numeric|min:0|max:100',
+            'slope'             => 'required|numeric|min:0|max:90',
+            'azimuth'           => 'required|numeric|min:0|max:360',
         ];
     }
 }

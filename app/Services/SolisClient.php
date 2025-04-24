@@ -6,15 +6,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 
+/**
+ * Service class handling interaction with the SolisCloud API.
+ * Implemented according to https://oss.soliscloud.com/templet/%5BExternal%5D%20SolisCloud%20Monitoring%20API.pdf
+ */
 class SolisClient
-{
-    /**
-     * This class handles interaction with the SolisCloud API. 
-     * 
-     * 
-     */
-    
-    
+{      
     /**
      * Properties
      */
@@ -36,7 +33,7 @@ class SolisClient
     }
 
     /**
-     * Requests a list of plants available for this client
+     * Request a list of plants available for this client
      */
     public function requestUserStationList(): Response
     {
@@ -72,7 +69,7 @@ class SolisClient
     // Private functions available to this class
 
     /**
-     * MD-5 hashes the body of the request
+     * MD-5 hash the body of the request
      * 
      * @param string $body
      * @return string
@@ -85,7 +82,7 @@ class SolisClient
     }
 
     /**
-     * Generates the authorisation header, a SHA1 hash of a number of the request's attributes
+     * Generate the authorisation header, a SHA1 hash of a number of the request's attributes
      * 
      * @param string $apiId (A valid API ID for soliscloud.com)
      * @param string $apiSecret (A valid API Secret for soliscloud.com)

@@ -3,7 +3,6 @@ My Household View
 
 View displaying the current user's household as well as its members
 --}}
-
 <x-base-layout>
     <x-slot:title>ApolloWatts - My Household</x-slot:title>
     <h1>Your Household</h1>

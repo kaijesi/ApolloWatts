@@ -1,7 +1,7 @@
 {{-- 
 Installation Page View 
 
-Contains details about an individual installation as well as analytics for it
+Contains details about an individual installation as well as analytics for it.
 --}}
 <x-base-layout>
     <x-slot:title>ApolloWatts - {{ $installation['name'] }} Details</x-slot:title>

@@ -9,10 +9,9 @@ use InvalidArgumentException;
 
 class InstallationForm extends Component
 {
-    public bool $isUpdate;
+    public bool $isUpdate; // Allows to use the same form for create and update requests
     public $installation;
     
-    // Allows to use the same form for create and update requests
     /**
      * Create a new component instance.
      */

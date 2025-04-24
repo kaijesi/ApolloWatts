@@ -28,7 +28,7 @@ Card component showing details for a user
                 @if (Auth::user()->can('delete', $user))
                     <form action="{{ route('my-details.destroy', $user['id']) }}" method="POST"
                         onsubmit="return confirm('{{ $user->is_household_admin
-                            ? 'As an admin, deleting your account will delete the household, its installations and other members. Are you sure you want to proceed?'
+                            ? 'If you are the last admin, deleting your account will delete the household, its installations and other members. Are you sure you want to proceed?'
                             : 'Are you sure you want to delete your user account?' }}'
                         )">
                         @csrf

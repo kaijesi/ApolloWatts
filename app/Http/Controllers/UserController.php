@@ -11,10 +11,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Controller handling interaction with users.
+ * 
+ * Contains methods to view, create, update and delete users.
+ */
 class UserController extends Controller
 {
     /**
-     * Display a listing of all Users.
+     * Display a listing of all users.
      */
     public function index()
     {
@@ -22,7 +27,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new user.
      */
     public function create()
     {
@@ -30,17 +35,18 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in storage.
      */
     public function store(UserStoreRequest $request)
-    {
+    {   
         // Retrieve validated input
         $validated = $request->validated();
 
-        // Depending on user choice, create a new or join an existing household
+        // Depending on user choice, join an existing household or create a new one
+
         $userHouseholdId = NULL;
 
-        // Household creation
+        // Household creation option
         if ($validated['householdOption'] == 'create') {
             $household = new Household;
             $household->name = $validated['lastNameInput'] . ' Household';
@@ -54,9 +60,10 @@ class UserController extends Controller
 
             $household->save();
 
+            // Set newly created household as user's household
             $userHouseholdId = $household->id;
         }
-        // Household join
+        // Household join option
         else {
             $userHouseholdId = $validated['householdInviteCode'];
         }
@@ -67,37 +74,43 @@ class UserController extends Controller
         $user->email = $validated['emailInput'];
         $user->password = Hash::make($validated['passwordInput']);
         $user->household_id = $userHouseholdId;
+
+        // A household creator will always be the household's first admin
         if ($validated['householdOption'] == 'create') {
             $user->is_household_admin = true;
         }
 
-        // DB transaction
+        // Save to DB
         $user->save();
 
-
-        // Proceed with login and show home page
+        // Process login and show home page
         Auth::login($user);
         return redirect(route('home'))->with('success', 'User created. Welcome to ApolloWatts.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified user.
+     * 
+     * In the current scope, any user should only ever be shown their own user detail page, therefore, no user object passed into this function.
      */
-    public function show(User $user)
+    public function show()
     {
         $user = Auth::user();
         return view('my-details', ['user' => $user]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified user.
+     *
+     * @deprecated The form is displayed in a modal and doesn't require its own route.
      */
     public function edit(User $user)
     {
+        //
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user in storage.
      */
     public function update(UserUpdateRequest $request, User $user)
     {
@@ -116,21 +129,22 @@ class UserController extends Controller
 
         // Update admin attribute
         if (isset($validated['is-household-admin'])) {
-            // For removals of admin privileges prevent user from removing the last admin
-            if (!$validated['is-household-admin']) { 
+
+            // When trying to set household admin rights to false, prevent user from removing the last admin
+            if ($validated['is-household-admin'] == false) {
                 $adminCount = User::where('household_id', $user->household_id)->where('is_household_admin', true)->count();
                 if ($adminCount == 1) {
                     return back()->withErrors('You cannot remove the last remaining admin');
                 }
             }
-            
+
             $user->is_household_admin = $validated['is-household-admin'];
         }
 
         // Check current password and overwrite with new one if correct
         if (isset($validated['new-password'])) {
             if (!Hash::check($validated['current-password'], $user->password)) {
-                return back()->withErrors(['current-password' => 'The provided current password does not match your current password.']);
+                return back()->withErrors(['current-password' => 'The provided current password does not match our records.']);
             }
 
             $user->password = Hash::make($validated['new-password']);
@@ -140,27 +154,27 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('my-household')->with('success', 'Your details have been updated.');
-
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified user from storage.
      */
     public function destroy(User $user)
     {
-        if (Auth::user()->cannot('delete', $user)){
+        // Check if running user is authorised to delete this user
+        if (Auth::user()->cannot('delete', $user)) {
             abort(403);
         }
 
-        // Delete household if admin leaves (deletion cascades to all child objects of household, meaning all users and installations)
-        if ($user->is_household_admin) 
-        {
+        // Delete household if last admin leaves (deletion cascades to all child objects of household, meaning all users and installations)
+        $adminCount = User::where('household_id', $user->household_id)->where('is_household_admin', true)->count();
+        if ($user->is_household_admin && $adminCount == 1) {
             $user->household()->delete();
         }
-        
+
         // Otherwise, only delete user
         $user->delete();
-        
+
         return redirect()->route('home');
     }
 }

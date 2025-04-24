@@ -1,3 +1,9 @@
+{{-- 
+Modal Component
+
+Component for a generic modal that can be customised and into which other content can be inserted.
+--}}
+
 <div class="modal fade" id="{{ $modalId }}" tabindex="-1" aria-labelledby="{{ $modalTitle }}" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">

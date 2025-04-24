@@ -5,6 +5,10 @@ namespace App\Services;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 
+/**
+ * Service class to interact with the PVGIS API.
+ * Implemented according to https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/getting-started-pvgis/api-non-interactive-service_en
+ */
 class PvgisClient
 {
 
@@ -14,7 +18,7 @@ class PvgisClient
     private PendingRequest $client;
 
     /**
-     * Create a new class instance.
+     * Create a new PVGIS client.
      */
     public function __construct()
     {

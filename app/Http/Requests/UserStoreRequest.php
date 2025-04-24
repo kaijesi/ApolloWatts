@@ -25,14 +25,17 @@ class UserStoreRequest extends FormRequest
             'firstNameInput'        => 'required|string',
             'lastNameInput'         => 'required|string',
             'passwordInput'         => 'required|string',
-            'emailInput'            => 'required|email|unique:users,email',
-            'householdOption'       => 'required|in:join,create',
+            'emailInput'            => 'required|email|unique:users,email', // Make sure user does not yet exist
+            'householdOption'       => 'required|in:join,create', // User needs to join or create a household
+            // Required if join
             'householdInviteCode'   => 'required_if:householdOption,join|exists:households,id|string|max:255',
+            // Required if create
             'street'                => 'required_if:householdOption,create|string|max:255',
             'number'                => 'required_if:householdOption,create|string|max:255',
             'postcode'              => 'required_if:householdOption,create|string|max:255',
             'city'                  => 'required_if:householdOption,create|string|max:255',
             'country'               => 'required_if:householdOption,create|string|max:255',
+            // Solis data, always optional
             'solis_api_id'          => 'nullable|string|max:255',
             'solis_api_key'         => 'nullable|string|max:255',
         ];

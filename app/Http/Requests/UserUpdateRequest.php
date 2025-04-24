@@ -12,7 +12,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return Auth::check(); // Only logged-in users, further authorisation logic in controller
     }
 
     /**

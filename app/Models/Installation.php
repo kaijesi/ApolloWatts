@@ -5,6 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Model representing a PV installation.
+ * 
+ * Contains attributes about the installation, including its location, size and direction towards the sun.
+ * Information contained describes the plant and is necessary for retrieving solar power output projections from the PVGIS API.
+ * Each installation is realted to one household.
+ */
 class Installation extends Model
 {
     /**
@@ -27,7 +34,7 @@ class Installation extends Model
     ];
 
     /**
-     * Create relationship to Household
+     * Create relationship to household
      * Every installation has to belong to a household
      */
     public function household(): BelongsTo

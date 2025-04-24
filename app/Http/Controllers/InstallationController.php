@@ -8,25 +8,32 @@ use App\Models\Installation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Controller handling interaction with installations.
+ * 
+ * Provides methods to display, create, edit and delete installations.
+ */
 class InstallationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of installations.
      */
     public function index()
     {
-        // Retireve current user
+        // Retrieve current user
         $user = Auth::user();
 
-        // Find installations and display them on the my-installations view
+        // Find installations for their household
         $installations = $user->household->installations;
+
+        // Display these installations
         return view('my-installations', ['installations' => $installations]);
     }
 
     /**
-     * Show the form for creating a new resource.
-     * --No use case at this point--
-     * Installations are only added via popup/modal, there is no designated form view
+     * Show the form for creating a new installation.
+     * 
+     * @deprecated The form is displayed in a modal and doesn't require its own route.
      */
     public function create()
     {
@@ -34,14 +41,16 @@ class InstallationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created installation in storage.
      */
     public function store(InstallationStoreRequest $request)
     {
+        // Check if the current user is authorised to create a new installation
         if (Auth::user()->cannot('create', Installation::class)) {
             abort(403);
         }
-        // Retireve validated data
+
+        // Retrieve validated data from form
         $validatedData = $request->validated();
 
         // Create new installation for current user's household
@@ -52,24 +61,28 @@ class InstallationController extends Controller
         // Store into DB
         $installation->save();
 
+        // Return to installations list view
         return redirect()->route('my-installations')->with('success', 'Your installation has been created.');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified installation.
      */
     public function show(Installation $installation)
     {
-        // Check whether the user is allowed to view the installation based on defined policies
+        // Check whether the user is allowed to view the installation
         if (Auth::user()->cannot('view', $installation)) {
             abort(403);
         }
+        
+        // Display the installation
         return view('installation', ['installation' => $installation]);
     }
 
     /**
      * Show the form for editing the specified resource.
-     * -- Not used, form is shown in modal on installation detail page)
+     * 
+     * @deprecated The form is displayed in a modal and doesn't require its own route.
      */
     public function edit(Installation $installation)
     {
@@ -86,25 +99,30 @@ class InstallationController extends Controller
             abort(403);
         }
 
-        // Retireve validated data
+        // Retrieve validated data
         $validatedData = $request->validated();
 
         // Update installation in DB
         $installation->update($validatedData);
 
+        // Show updated installation
         return redirect()->route('installations.show', $installation)->with('success', 'Your installation has been updated.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified installation from storage.
      */
     public function destroy(Installation $installation)
     {
-        // Check whether the user is allowed to delete the installation based on defined policies
+        // Check whether the user is allowed to delete the installation
         if (Auth::user()->cannot('delete', $installation)) {
             abort(403);
         }
+
+        // Delete installation
         $installation->delete();
+
+        // Return to installations list view
         return redirect(route('my-installations'));
     }
 }

@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Model representing a user of the website.
+ * 
+ * Contains necessary attributes for authentication and authorisation.
+ * Each user belongs to one household.
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -50,7 +56,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Create relationship to Household
+     * Create relationship to household
      * Every user has to belong to a household
      */
     public function household(): BelongsTo
