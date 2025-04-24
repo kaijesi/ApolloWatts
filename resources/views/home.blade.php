@@ -11,9 +11,11 @@ Contains welcome page with basic information about the application.
       <p class="lead">Your one-stop-shop for getting reliable analytics and forecasts for your home solar performance!</p>
       <hr class="my-4">
       <p>It's easy, it's free. Just start your household account, invite your family members and add your first installation. ApolloWatts will help you track your home PV energy installation details, provide you with science-based predictions for your system's energy output and an interface to see real-time metrics about its performance.</p>
+      @guest
       <p class="lead">
         <a class="btn btn-primary btn-lg" href="{{ route('signup') }}" role="button">Register Now</a>
       </p>
+      @endguest
     </div>
     {{-- Features Section --}}
     <h2>Features</h2>
